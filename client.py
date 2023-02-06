@@ -1,6 +1,7 @@
 import os
 import socket
 import struct
+import time
 
 
 def send_file(sck: socket.socket, filename):
@@ -15,9 +16,21 @@ def send_file(sck: socket.socket, filename):
             sck.sendall(read_bytes)
 
 
-with socket.create_connection(("localhost", 6190)) as conn:
+count = 0
+text = ''
+with socket.create_connection(("192.168.0.128", 6190)) as conn:
     print("Подключение к серверу.")
     print("Передача файла...")
-    send_file(conn, "image.png")
-    print("Отправлено.")
+
+
+    while True:
+        text += f'[{count}] kek\n'
+        with open('file.txt', 'w') as file:
+            file.write(text)
+        send_file(conn, "file.txt")
+        print("Отправлено.")
+        count += 1
+        time.sleep(2)
+
+
 print("Соединение закрыто.")

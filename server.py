@@ -43,6 +43,6 @@ with socket.create_server(("192.168.0.128", 6190)) as server:
     conn, address = server.accept()
     print(f"{address[0]}:{address[1]} подключен.")
     print("Получаем файл...")
-    receive_file(conn, "image-received.png")
+    receive_file(conn, "принятый_файл.txt")
     print("Файл получен.")
 print("Соединение закрыто.")
