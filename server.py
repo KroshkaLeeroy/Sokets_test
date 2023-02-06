@@ -38,7 +38,7 @@ def receive_file(sck: socket.socket, filename):
                 received_bytes += len(chunk)
 
 
-with socket.create_server(("localhost", 6190)) as server:
+with socket.create_server(("192.168.0.128", 6190)) as server:
     print("Ожидание клиента...")
     conn, address = server.accept()
     print(f"{address[0]}:{address[1]} подключен.")
