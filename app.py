@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 from threading import Thread
 
 app = Flask(__name__)
+downloader = Downloader()
 
 class Downloader:
     def __init__(self):
@@ -13,6 +14,7 @@ class Downloader:
         self.rates = self.api.rates().get()
         self.file_whitetickers = self.read_whitetickers()
         self.file_exchengers = self.read_exchangers()
+        Thread(target=self._update_rates()).start()
 
 
     def _update_rates(self):
