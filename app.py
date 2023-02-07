@@ -4,9 +4,6 @@ import time
 from flask import Flask, jsonify
 from threading import Thread
 
-app = Flask(__name__)
-downloader = Downloader()
-
 class Downloader:
     def __init__(self):
 
@@ -81,6 +78,11 @@ class Downloader:
         for rate in clear_rates:
             rate['exchange_name'] = ex_name[rate['exchange_id']]
         return clear_rates
+
+app = Flask(__name__)
+downloader = Downloader()
+
+
 
 @app.route('/get')
 def get_page():
