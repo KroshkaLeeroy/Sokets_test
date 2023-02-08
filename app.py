@@ -17,18 +17,18 @@ class Downloader:
 
     def _update_rates(self):
         while True:
-            print('Скачиваю файл')
+            print(time.ctime(time.time())[14:-5],'Скачиваю файл')
             self.api = BestChange(cache=True)
-            print('Обновляю обменники')
+            print(time.ctime(time.time())[14:-5],'Обновляю обменники')
             try:
                 self.rates = self.api.rates().get()
                 self.exchangers = self.api.exchangers().get()
-                self.clear_rates = self.filter_whitetickers_black_exchengers_add_status_ex_name()
+                self.clear_rates = [time.time(),self.filter_whitetickers_black_exchengers_add_status_ex_name()]
                 # with open('../var/www/html/clear_rates.json', 'w') as file:
                 #     json.dump(self.clear_rates, file)
             except:
                 print('ОШИБКА получения информации с Bestchange.ru')
-            print('Закончил обновлять обменники')
+            print(time.ctime(time.time())[14:-5],'Закончил обновлять обменники')
             time.sleep(1)
 
     def read_whitetickers(self):
