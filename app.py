@@ -1,3 +1,5 @@
+import os
+
 from bestchange_api import BestChange
 import json
 import time
@@ -8,7 +10,7 @@ from threading import Thread
 class Downloader:
     def __init__(self):
         print('Начало Инициализации')
-        self.api = BestChange(cache=True)
+        self.api = BestChange()
         self.rates = self.api.rates().get()
         self.file_whitetickers = self.read_whitetickers()
         self.file_exchengers = self.read_exchangers()
@@ -18,7 +20,7 @@ class Downloader:
     def _update_rates(self):
         while True:
             print(time.ctime(time.time())[14:-5],'Скачиваю файл')
-            self.api = BestChange(cache=True)
+            self.api = BestChange()
             print(time.ctime(time.time())[14:-5],'Обновляю обменники')
             try:
                 self.rates = self.api.rates().get()
@@ -26,6 +28,7 @@ class Downloader:
                 self.clear_rates = [time.time(),self.filter_whitetickers_black_exchengers_add_status_ex_name()]
                 # with open('../var/www/html/clear_rates.json', 'w') as file:
                 #     json.dump(self.clear_rates, file)
+                os.remove('info.zip')
             except:
                 print('ОШИБКА получения информации с Bestchange.ru')
             print(time.ctime(time.time())[14:-5],'Закончил обновлять обменники')
