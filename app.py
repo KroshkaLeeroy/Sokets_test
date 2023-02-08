@@ -4,19 +4,22 @@ import time
 from flask import Flask, jsonify
 from threading import Thread
 
+
 class Downloader:
     def __init__(self):
-
+        print('Начало Инициализации')
         self.api = BestChange(cache=True)
         self.rates = self.api.rates().get()
         self.file_whitetickers = self.read_whitetickers()
         self.file_exchengers = self.read_exchangers()
-        Thread(target=self._update_rates()).start()
-
+        print('Запуск потока скачивания')
+        Thread(target=self._update_rates).start()
 
     def _update_rates(self):
         while True:
+            print('Скачиваю файл')
             self.api = BestChange(cache=True)
+            print('Обновляю обменники')
             try:
                 self.rates = self.api.rates().get()
                 self.exchangers = self.api.exchangers().get()
@@ -25,8 +28,8 @@ class Downloader:
                 #     json.dump(self.clear_rates, file)
             except:
                 print('ОШИБКА получения информации с Bestchange.ru')
+            print('Закончил обновлять обменники')
             time.sleep(1)
-
 
     def read_whitetickers(self):
         with open('whitetickers.txt', 'r') as file:
@@ -44,7 +47,6 @@ class Downloader:
 
             return data
 
-
     def read_exchangers(self):
         with open('exchangers.txt', 'r') as file:
             text2 = file.readlines()
@@ -57,7 +59,6 @@ class Downloader:
                      'name': line2[2].split('=')[1][:-1]}
                 )
             return data2
-
 
     def filter_whitetickers_black_exchengers_add_status_ex_name(self):
         self.id_monets = [monet['id'] for monet in self.file_whitetickers]
@@ -79,16 +80,21 @@ class Downloader:
             rate['exchange_name'] = ex_name[rate['exchange_id']]
         return clear_rates
 
+
 app = Flask(__name__)
 downloader = Downloader()
 
 
+@app.route('/')
+def main_start():
+    return 'Почти готово, заходить по ссылке /get'
+
 
 @app.route('/get')
 def get_page():
+    global downloader
     return jsonify(downloader.clear_rates)
 
 
-if __name__ == "__main__":
-    downloader = Downloader()
-    Thread(target=downloader._update_rates()).start()
+if __name__ == '__main__':
+    Thread(target=app.run, args=('0.0.0.0', 80)).start()

@@ -39,18 +39,20 @@ class Rates:
                     'exchange_id': int(val[2]),
                     'usdt_mon': float(val[3]) / float(val[4]),
                     'mon_usdt': float(val[4]) / float(val[3]),
-                    'give_get': (float(val[3]) , float(val[4])),
-                    #'reserve': float(val[5]),
-                    #'reviews': val[6].split('.') if split_reviews else val[6],
+                    'give_get': (float(val[3]), float(val[4])),
+                    # 'reserve': float(val[5]),
+                    # 'reviews': val[6].split('.') if split_reviews else val[6],
                     'min_sum': float(val[8]),
                     'max_sum': float(val[9]),
-                    #'city_id': int(val[10]),
+                    # 'city_id': int(val[10]),
                 })
             except ZeroDivisionError:
                 # Иногда бывает курс N:0 и появляется ошибка деления на 0.
                 pass
+
     def get_text(self):
         return self.text
+
     def get(self):
         return self.__data
 
