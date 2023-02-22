@@ -32,7 +32,7 @@ class Downloader:
             except:
                 print('ОШИБКА получения информации с Bestchange.ru')
             print(time.ctime(time.time())[14:-5],'Закончил обновлять обменники')
-            time.sleep(1)
+            time.sleep(0.5)
 
     def read_whitetickers(self):
         with open('whitetickers.txt', 'r') as file:
@@ -81,6 +81,7 @@ class Downloader:
         ex_name = {ex['id']: ex['name'] for ex_id, ex in self.exchangers.items()}
         for rate in clear_rates:
             rate['exchange_name'] = ex_name[rate['exchange_id']]
+            rate['time'] = time.time()
         return clear_rates
 
 
