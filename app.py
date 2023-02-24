@@ -91,13 +91,18 @@ downloader = Downloader()
 
 @app.route('/')
 def main_start():
-    return 'Почти готово, заходить по ссылке /get'
+    return 'Почти готово, заходить по <a href="/get">ссылке</a>'
 
 
 @app.route('/get')
 def get_page():
     global downloader
     return jsonify(downloader.clear_rates)
+
+@app.route('/get-rates')
+def get_rates_page():
+    global downloader
+    return jsonify(downloader.rates)
 
 
 if __name__ == '__main__':
